@@ -95,7 +95,7 @@ interface MaskOptions {
 
 ## Testing
 
-in order to load mocks provided by RNGH add following to your jest config in jest.config.json:
+in order to load mocks provided by react-native-money-input add following to your jest config in jest.config.json:
 
 ```
 "setupFiles": ["./node_modules/@alexzunik/react-native-money-input/jest/setup.js"]
