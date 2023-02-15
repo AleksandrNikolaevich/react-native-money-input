@@ -103,6 +103,7 @@
       "tagName": "v${version}"
     },
     "npm": {
+      "access": "public",
       "publish": true
     },
     "github": {
