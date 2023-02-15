@@ -50,7 +50,8 @@
   },
   "homepage": "https://github.com/AleksandrNikolaevich/react-native-money-input.git#readme",
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
   },
   "devDependencies": {
     "@evilmartians/lefthook": "^1.2.2",
@@ -103,7 +104,6 @@
       "tagName": "v${version}"
     },
     "npm": {
-      "access": "public",
       "publish": true
     },
     "github": {
