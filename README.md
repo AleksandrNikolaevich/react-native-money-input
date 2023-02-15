@@ -4,8 +4,12 @@ Fully native money input for React Native
 
 ## Example
 
-![iOS Demo](https://raw.githubusercontent.com/AleksandrNikolaevich/react-native-money-input/master/assets/ios.gif)
-![Android Demo](https://raw.githubusercontent.com/AleksandrNikolaevich/react-native-money-input/master/assets/android.gif)
+|iOS|Android|
+|-|-|
+| ![iOS Demo](https://raw.githubusercontent.com/AleksandrNikolaevich/react-native-money-input/master/assets/ios.gif) | ![Android Demo](https://raw.githubusercontent.com/AleksandrNikolaevich/react-native-money-input/master/assets/android.gif) |
+
+
+
 
 ## Installation
 
