@@ -1,18 +1,41 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from '@alexzunik/react-native-money-input';
+import { StyleSheet, View, Text, Button, Keyboard } from 'react-native';
+import { MoneyTextInput } from '@alexzunik/react-native-money-input';
+
+function getRandom(min: number, max: number) {
+  return Math.round(Math.random() * (max - min) + min);
+}
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
-
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
-
+  const [value, setValue] = React.useState<string>();
+  const [isFocused, setFocus] = React.useState<boolean>(false);
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <Text>Money masked field</Text>
+      <MoneyTextInput
+        style={styles.input}
+        value={value}
+        onChangeText={(_, unmasked) => setValue(unmasked)}
+        onChange={({ nativeEvent }) => console.log(nativeEvent)}
+        onKeyPress={({ nativeEvent }) => console.log(nativeEvent)}
+        onFocus={() => setFocus(true)}
+        onBlur={() => setFocus(false)}
+        prefix="$"
+        groupingSeparator=","
+        fractionSeparator="."
+        placeholder="$0,000,000.00"
+        autoFocus
+      />
+      <Text>Value: {value}</Text>
+      <Text>Is focused: {isFocused ? 'true' : 'false'}</Text>
+      <Button
+        title="Set random value"
+        onPress={() => {
+          setValue(`${getRandom(10000, 9999999)}.${getRandom(1, 9999999)}`);
+        }}
+      />
+      <Button title="Hide keyboard" onPress={Keyboard.dismiss} />
     </View>
   );
 }
@@ -20,12 +43,13 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
+    paddingHorizontal: 20,
     justifyContent: 'center',
   },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
+  input: {
+    height: 48,
+    paddingHorizontal: 14,
+    backgroundColor: '#eee',
+    borderRadius: 10,
   },
 });

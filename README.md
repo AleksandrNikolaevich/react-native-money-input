@@ -1,21 +1,100 @@
-# @alexzunik/react-native-money-input
+# react-native-money-input
 
-Native money formatter for text input
+Fully native money input for React Native
+
+## Example
+
+![iOS Demo](https://raw.githubusercontent.com/AleksandrNikolaevich/react-native-money-input/master/assets/ios.gif)
+![Android Demo](https://raw.githubusercontent.com/AleksandrNikolaevich/react-native-money-input/master/assets/android.gif)
 
 ## Installation
 
 ```sh
-npm install @alexzunik/react-native-money-input
+yarn add @alexzunik/react-native-money-input
+
+npx pod-install
 ```
 
 ## Usage
 
 ```js
-import { multiply } from '@alexzunik/react-native-money-input';
+import { MoneyTextInput } from '@alexzunik/react-native-money-input';
 
 // ...
 
-const result = await multiply(3, 7);
+const Component = () => {
+  const [value, setValue] = React.useState<string>();
+  return (
+    <MoneyTextInput
+        value={value}
+        onChangeText={(formatted, extracted) => {
+          console.log(formatted) // $1,234,567.89
+          console.log(extracted) // 1234567.89
+          setValue(extracted)
+        }}
+        prefix="$"
+        groupingSeparator=","
+        fractionSeparator="."
+      />
+  )
+}
+```
+
+
+## Props
+
+```ts
+
+interface MaskOptions {
+  /**
+   * Separator between integer number groups
+   *
+   * Default: `space`
+   */
+  groupingSeparator?: string;
+  /**
+   * Separator between integer and fraction parts
+   *
+   * Default: `,`
+   */
+  fractionSeparator?: string;
+  /**
+   * Prefix before number.
+   *
+   * For example: if prefix = `$` input will be `$1,234.43`
+   *
+   * Default: `undefined`
+   */
+  prefix?: string;
+  /**
+   * Suffix after number.
+   *
+   * For example: if suffix = ` EUR` input will be `1 234,43 EUR`
+   *
+   * Default: `undefined`
+   */
+  suffix?: string;
+  /**
+   * Maximum length in integer part, exclude separators
+   *
+   * Default: `Infinity`
+   */
+  maximumIntegerDigits?: number;
+  /**
+   * Maximum length in fractional part
+   *
+   * Default: `2`
+   */
+  maximumFractionalDigits?: number;
+}
+```
+
+## Testing
+
+in order to load mocks provided by RNGH add following to your jest config in jest.config.json:
+
+```
+"setupFiles": ["./node_modules/@alexzunik/react-native-money-input/jest/setup.js"]
 ```
 
 ## Contributing
@@ -25,7 +104,3 @@ See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the 
 ## License
 
 MIT
-
----
-
-Made with [create-react-native-library](https://github.com/callstack/react-native-builder-bob)
