@@ -17,8 +17,24 @@ extension String {
     return removeCharactersExpression.stringByReplacingMatches(in: self, options: [], range: range, withTemplate: withTemplate)
   }
   
-  func replace(substring: String, withTemplate: String) -> String {
-    return self.replacingOccurrences(of: substring, with: withTemplate, options: .literal, range: nil)
+  func replace(substring: String, withTemplate template: String, range: Range<String.Index>? = nil) -> String {
+    return self.replacingOccurrences(of: substring, with: template, options: .literal, range: range)
+  }
+  
+  func replace(prefix text: String, withTemplate template: String) -> String {
+    if (self.count < text.count) {
+      return self
+    }
+    let range = text.startIndex..<text.endIndex
+    return self.replace(substring: text, withTemplate: template, range: range)
+  }
+  
+  func replace(suffix text: String, withTemplate template: String) -> String {
+    if (self.count < text.count) {
+      return self
+    }
+    let range = self.index(self.endIndex, offsetBy: -text.count)..<self.endIndex
+    return self.replace(substring: text, withTemplate: template, range: range)
   }
   
   func with(suffix: String?) -> String {

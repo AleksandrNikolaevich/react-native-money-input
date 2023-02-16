@@ -51,6 +51,8 @@ public class Mask {
   public static func unmask(text: String, withOptions options: Options) -> String {
     return text
       .replace(substring: options.fractionSeparator, withTemplate: staticFractionSeparator)
+      .replace(prefix: options.prefix ?? "", withTemplate: "")
+      .replace(suffix: options.suffix ?? "", withTemplate: "")
       .replace(pattern: "[^\\d\\.]", withTemplate: "")
   }
 }

@@ -37,7 +37,9 @@ class Mask {
       var result = formatter.format(integerPart)
 
       if (fractionSeparators.count() == 1) {
-        return add(result,  options.prefix, options.suffix)
+        return result
+          .withPrefix(options.prefix)
+          .withSuffix(options.suffix)
       }
 
       result += options.fractionSeparator
@@ -49,20 +51,31 @@ class Mask {
       else
         fraction
 
-      return add(result, options.prefix, options.suffix)
+      return result
+        .withPrefix(options.prefix)
+        .withSuffix(options.suffix)
     }
 
     fun unmask(text: String, options: Options): String {
       return text
         .replace(options.fractionSeparator, staticFractionSeparator)
+        .removePrefix(options.prefix)
+        .removeSuffix(options.suffix)
         .replace(Regex("[^\\d\\.]"), "")
     }
 
-    private fun add(text: String, prefix: String, suffix: String): String {
-      if (text.isEmpty()) {
-        return  text
+    private fun String.withSuffix(suffix: String): String {
+      if (this.isEmpty()) {
+        return this
       }
-      return prefix + text + suffix
+      return this + suffix
+    }
+
+    private fun String.withPrefix(prefix: String): String {
+      if (this.isEmpty()) {
+        return this
+      }
+      return prefix + this
     }
   }
 }
