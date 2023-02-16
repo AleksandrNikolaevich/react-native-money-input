@@ -1,5 +1,20 @@
 # react-native-money-input
 
+<p align="center">
+  <a href="https://opensource.org/licenses/MIT">
+    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT license" />
+  </a>
+  <a href="https://npmjs.org/package/@alexzunik/react-native-money-input">
+    <img src="http://img.shields.io/npm/v/@alexzunik/react-native-money-input.svg" alt="Current npm package version" />
+  </a>
+  <a href="https://npmjs.org/package/@alexzunik/react-native-money-input">
+    <img src="http://img.shields.io/npm/dm/@alexzunik/react-native-money-input.svg" alt="Downloads" />
+  </a>
+  <a href="https://npmjs.org/package/@alexzunik/react-native-money-input">
+    <img src="http://img.shields.io/npm/dt/@alexzunik/react-native-money-input.svg?label=total%20downloads" alt="Total downloads" />
+  </a>
+</p>
+
 Fully native money input for React Native
 
 ## Example
