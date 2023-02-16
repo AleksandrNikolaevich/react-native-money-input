@@ -40,7 +40,12 @@
   "keywords": [
     "react-native",
     "ios",
-    "android"
+    "android",
+    "money",
+    "input",
+    "field",
+    "text",
+    "formatting"
   ],
   "repository": "https://github.com/AleksandrNikolaevich/react-native-money-input.git",
   "author": "Aleksandr Nikolaevich <aleksandr.nikolaevich.ch@gmail.com> (https://github.com/AleksandrNikolaevich)",
