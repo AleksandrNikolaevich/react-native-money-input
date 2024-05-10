@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 
 import { StyleSheet, View, Text, Button, Keyboard } from 'react-native';
 import { MoneyTextInput } from '@alexzunik/react-native-money-input';
@@ -8,8 +8,10 @@ function getRandom(min: number, max: number) {
 }
 
 export default function App() {
-  const [value, setValue] = React.useState<string>();
-  const [isFocused, setFocus] = React.useState<boolean>(false);
+  const [value, setValue] = useState<string>();
+  const [isUsd, setIsUsd] = useState<boolean>(false);
+  const [isFocused, setFocus] = useState<boolean>(false);
+
   return (
     <View style={styles.container}>
       <Text>Money masked field</Text>
@@ -21,9 +23,12 @@ export default function App() {
         onKeyPress={({ nativeEvent }) => console.log(nativeEvent)}
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
-        prefix="$"
-        groupingSeparator=","
-        fractionSeparator="."
+        prefix={isUsd ? '$' : ''}
+        suffix={isUsd ? '' : ' EUR'}
+        groupingSeparator={isUsd ? ',' : ' '}
+        fractionSeparator={isUsd ? '.' : ','}
+        maximumIntegerDigits={9}
+        maximumFractionalDigits={2}
         placeholder="$0,000,000.00"
         autoFocus
       />
@@ -36,6 +41,12 @@ export default function App() {
         }}
       />
       <Button title="Hide keyboard" onPress={Keyboard.dismiss} />
+      <Button
+        title="Change currency"
+        onPress={() => {
+          setIsUsd((prev) => !prev);
+        }}
+      />
     </View>
   );
 }
