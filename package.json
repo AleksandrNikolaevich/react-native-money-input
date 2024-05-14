@@ -1,6 +1,6 @@
 {
   "name": "@alexzunik/react-native-money-input",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Fully native money input for React Native",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
