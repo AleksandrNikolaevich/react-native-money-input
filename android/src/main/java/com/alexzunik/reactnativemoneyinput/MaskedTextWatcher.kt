@@ -24,7 +24,11 @@ class MaskedTextWatcher(
     }
     val newValue = Mask.apply(value.toString(), options)
     field.setText(newValue)
-    val newCursorPosition = newValue.length - options.suffix.length
+    setCursor(newValue)
+  }
+
+  private fun setCursor(value: String) {
+    val newCursorPosition = value.length - options.suffix.length
     if (newCursorPosition > 0) {
       field.setSelection(newCursorPosition)
     }

@@ -24,10 +24,16 @@ class ReactNativeMoneyInputModule(private val reactContext: ReactApplicationCont
 
     uiManager.addUIBlock { viewRegistry ->
       val editText = viewRegistry.resolveView(reactNode) as EditText
-      editText.removeTextChangedListener(listeners[getKey(reactNode)])
+      val prevListener = listeners[getKey(reactNode)]
+
+      editText.removeTextChangedListener(prevListener)
+
       val listener = MaskedTextWatcher(editText, getMaskOptions(options))
+
       listeners.set(getKey(reactNode), listener)
+
       editText.addTextChangedListener(listener)
+      editText.setSelection(editText.text.toString().length)
     }
   }
 

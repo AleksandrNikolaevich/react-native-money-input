@@ -9,7 +9,7 @@ function getRandom(min: number, max: number) {
 
 export default function App() {
   const [value, setValue] = useState<string>();
-  const [isUsd, setIsUsd] = useState<boolean>(false);
+  const [isUsd, setIsUsd] = useState<boolean>(true);
   const [isFocused, setFocus] = useState<boolean>(false);
 
   return (

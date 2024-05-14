@@ -26,7 +26,7 @@ class Mask {
       }
 
       val fractionSeparators = rawText.split(options.fractionSeparator)
-      val integerPart = fractionSeparators[0].toBigInteger()
+      val integerPart = if (fractionSeparators[0].isEmpty()) 0 else fractionSeparators[0].toBigInteger()
 
       val formatter = DecimalFormat()
 
