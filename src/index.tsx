@@ -82,7 +82,7 @@ export const MoneyTextInput = forwardRef<TextInput, MoneyTextInputProps>(
   (
     {
       groupingSeparator = ' ',
-      fractionSeparator = ',',
+      fractionSeparator,
       suffix,
       prefix,
       maximumFractionalDigits = 2,

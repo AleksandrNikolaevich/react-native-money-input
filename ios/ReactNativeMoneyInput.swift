@@ -71,7 +71,7 @@ class ReactNativeMoneyInput: NSObject, RCTBridgeModule {
   
   private func getMaskOptions(from options: NSDictionary) -> Mask.Options {
     let groupingSeparator = options["groupingSeparator"] as? String ?? " "
-    let fractionSeparator = options["fractionSeparator"] as? String ?? "."
+    let fractionSeparator = options["fractionSeparator"] as? String ?? Mask.systemDecimalSeparator
     let suffix = options["suffix"] as? String
     let prefix = options["prefix"] as? String
     let maximumIntegerDigits = options["maximumIntegerDigits"] as? Int

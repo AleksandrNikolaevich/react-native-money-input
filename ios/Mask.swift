@@ -13,11 +13,11 @@ public class Mask {
     }
   }
 
-  static private let staticFractionSeparator = "."
+  static let systemDecimalSeparator = NumberFormatter().decimalSeparator ?? "."
   
   public static func apply(for text: String, withOptions options: Options) -> String {
     let rawText = Mask.unmask(text: text, withOptions: options)
-      .replace(substring: staticFractionSeparator, withTemplate: options.fractionSeparator)
+      .replace(substring: systemDecimalSeparator, withTemplate: options.fractionSeparator)
     
     if rawText.count == 0 {
       return ""
@@ -50,9 +50,9 @@ public class Mask {
   
   public static func unmask(text: String, withOptions options: Options) -> String {
     return text
-      .replace(substring: options.fractionSeparator, withTemplate: staticFractionSeparator)
+      .replace(substring: options.fractionSeparator, withTemplate: systemDecimalSeparator)
       .replace(prefix: options.prefix ?? "", withTemplate: "")
       .replace(suffix: options.suffix ?? "", withTemplate: "")
-      .replace(pattern: "[^\\d\\.]", withTemplate: "")
+      .replace(pattern: "[^\\d\\\(systemDecimalSeparator)]", withTemplate: "")
   }
 }

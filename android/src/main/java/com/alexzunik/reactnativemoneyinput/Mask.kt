@@ -15,11 +15,11 @@ class Mask {
 
 
   companion object {
-    private const val staticFractionSeparator = "."
+    val systemDecimalSeparator = DecimalFormat().decimalFormatSymbols.decimalSeparator.toString()
 
     fun apply(forText: String, options: Options): String {
       val rawText = unmask(forText, options)
-        .replace(staticFractionSeparator, options.fractionSeparator)
+        .replace(systemDecimalSeparator, options.fractionSeparator)
 
       if (rawText.isEmpty()) {
         return ""
@@ -58,10 +58,10 @@ class Mask {
 
     fun unmask(text: String, options: Options): String {
       return text
-        .replace(options.fractionSeparator, staticFractionSeparator)
+        .replace(options.fractionSeparator, systemDecimalSeparator)
         .removePrefix(options.prefix)
         .removeSuffix(options.suffix)
-        .replace(Regex("[^\\d\\.]"), "")
+        .replace(Regex("[^\\d\\$systemDecimalSeparator]"), "")
     }
 
     private fun String.withSuffix(suffix: String): String {

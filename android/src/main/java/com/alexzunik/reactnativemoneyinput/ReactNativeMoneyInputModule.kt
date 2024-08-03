@@ -58,7 +58,7 @@ class ReactNativeMoneyInputModule(private val reactContext: ReactApplicationCont
 
   private fun getMaskOptions(options: ReadableMap): Mask.Options {
     val groupingSeparator = safeResolveString(options, "groupingSeparator", " ")
-    val fractionSeparator = safeResolveString(options, "fractionSeparator", ".")
+    val fractionSeparator = safeResolveString(options, "fractionSeparator", Mask.systemDecimalSeparator)
     val prefix = safeResolveString(options, "prefix", "")
     val suffix = safeResolveString(options, "suffix", "")
     val maximumIntegerDigits = safeResolveInt(options, "maximumIntegerDigits")

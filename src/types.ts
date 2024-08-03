@@ -8,7 +8,7 @@ export interface MaskOptions {
   /**
    * Separator between integer and fraction parts
    *
-   * Default: `,`
+   * Default: system separator
    */
   fractionSeparator?: string;
   /**
