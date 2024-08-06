@@ -87,6 +87,8 @@ export const MoneyTextInput = forwardRef<TextInput, MoneyTextInputProps>(
       prefix,
       maximumFractionalDigits = 2,
       maximumIntegerDigits,
+      minValue,
+      maxValue,
       onChangeText,
       value,
       ...props
@@ -105,6 +107,16 @@ export const MoneyTextInput = forwardRef<TextInput, MoneyTextInputProps>(
         );
       }
 
+      if (
+        typeof minValue === 'number' &&
+        typeof maxValue === 'number' &&
+        minValue >= maxValue
+      ) {
+        throw new MoneyInputError(
+          'The property `minValue` must be strictly less than `maxValue`'
+        );
+      }
+
       return {
         groupingSeparator,
         fractionSeparator,
@@ -112,14 +124,18 @@ export const MoneyTextInput = forwardRef<TextInput, MoneyTextInputProps>(
         prefix,
         maximumIntegerDigits,
         maximumFractionalDigits,
+        minValue,
+        maxValue,
       };
     }, [
       fractionSeparator,
       groupingSeparator,
-      maximumFractionalDigits,
-      maximumIntegerDigits,
       suffix,
       prefix,
+      maximumIntegerDigits,
+      maximumFractionalDigits,
+      minValue,
+      maxValue,
     ]);
 
     useEffect(() => {

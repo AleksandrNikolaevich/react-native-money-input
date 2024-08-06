@@ -76,6 +76,8 @@ class ReactNativeMoneyInput: NSObject, RCTBridgeModule {
     let prefix = options["prefix"] as? String
     let maximumIntegerDigits = options["maximumIntegerDigits"] as? Int
     let maximumFractionalDigits = options["maximumFractionalDigits"] as? Int ?? 2
+    let maxValue = options["maxValue"] as? Double
+    let minValue = options["minValue"] as? Double
 
     return Mask.Options(
       groupingSeparator: groupingSeparator,
@@ -83,7 +85,9 @@ class ReactNativeMoneyInput: NSObject, RCTBridgeModule {
       suffix: suffix,
       prefix: prefix,
       maximumIntegerDigits: maximumIntegerDigits,
-      maximumFractionalDigits: maximumFractionalDigits)
+      maximumFractionalDigits: maximumFractionalDigits,
+      minValue: minValue,
+      maxValue: maxValue)
   }
 }
 

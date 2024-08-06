@@ -63,6 +63,8 @@ class ReactNativeMoneyInputModule(private val reactContext: ReactApplicationCont
     val suffix = safeResolveString(options, "suffix", "")
     val maximumIntegerDigits = safeResolveInt(options, "maximumIntegerDigits")
     val maximumFractionalDigits = safeResolveInt(options, "maximumFractionalDigits", 2)
+    val minValue = safeResolveDouble(options, "minValue")
+    val maxValue = safeResolveDouble(options, "maxValue")
 
     return Mask.Options(
       groupingSeparator,
@@ -70,7 +72,9 @@ class ReactNativeMoneyInputModule(private val reactContext: ReactApplicationCont
       prefix,
       suffix,
       maximumIntegerDigits,
-      maximumFractionalDigits)
+      maximumFractionalDigits,
+      minValue,
+      maxValue)
   }
 
   private fun safeResolveString(map: ReadableMap, key: String): String? {
@@ -93,6 +97,17 @@ class ReactNativeMoneyInputModule(private val reactContext: ReactApplicationCont
   }
   private fun safeResolveInt(map: ReadableMap, key: String, defaultValue: Int): Int {
     return safeResolveInt(map, key) ?: defaultValue
+  }
+
+  private fun safeResolveDouble(map: ReadableMap, key: String): Double? {
+    return try {
+      map.getDouble(key)
+    } catch (e: Exception) {
+      null
+    }
+  }
+  private fun safeResolveDouble(map: ReadableMap, key: String, defaultValue: Double): Double {
+    return safeResolveDouble(map, key) ?: defaultValue
   }
 
   companion object {

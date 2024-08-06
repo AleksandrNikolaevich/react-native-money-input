@@ -6,6 +6,8 @@ public class Mask {
     let prefix: String?
     let maximumIntegerDigits: Int?
     let maximumFractionalDigits: Int
+    let minValue: Double?
+    let maxValue: Double?
     var suffixLength: Int {
       get {
         suffix?.count ?? 0
@@ -16,7 +18,11 @@ public class Mask {
   static let systemDecimalSeparator = NumberFormatter().decimalSeparator ?? "."
   
   public static func apply(for text: String, withOptions options: Options) -> String {
-    let rawText = Mask.unmask(text: text, withOptions: options)
+    let rawText = Mask.range(
+      text: Mask.unmask(text: text, withOptions: options),
+      minValue: options.minValue,
+      maxValue: options.maxValue
+    )
       .replace(substring: systemDecimalSeparator, withTemplate: options.fractionSeparator)
     
     if rawText.count == 0 {
@@ -56,5 +62,35 @@ public class Mask {
       .replace(prefix: options.prefix ?? "", withTemplate: "")
       .replace(suffix: options.suffix ?? "", withTemplate: "")
       .replace(pattern: "[^\\d\\\(systemDecimalSeparator)]", withTemplate: "")
+  }
+  
+  private static func range(text: String, minValue: Double?, maxValue: Double?) -> String {
+    var result = text == systemDecimalSeparator
+      ? "0."
+      : text
+        .replace(substring: systemDecimalSeparator, withTemplate: ".")
+    
+    if (minValue != nil) {
+      guard let value = Double(result) else {
+        return ""
+      }
+      
+      if (minValue! > value) {
+        result = minValue!.format()
+      }
+    }
+    
+    if (maxValue != nil) {
+      guard let value = Double(result) else {
+        return ""
+      }
+      
+      if (maxValue! < value) {
+        result = maxValue!.format()
+      }
+    }
+    
+    return result
+      .replace(substring: ".", withTemplate: systemDecimalSeparator)
   }
 }

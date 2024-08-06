@@ -58,10 +58,12 @@ export default function App() {
           onFocus={() => setFocus(true)}
           onBlur={() => setFocus(false)}
           prefix={value ? '+' : ''}
-          suffix={' шт.'}
+          suffix={' шт'}
           groupingSeparator={' '}
           maximumIntegerDigits={9}
-          maximumFractionalDigits={0}
+          maximumFractionalDigits={2}
+          minValue={2}
+          maxValue={5.44}
         />
 
         <Text>Value: {value}</Text>

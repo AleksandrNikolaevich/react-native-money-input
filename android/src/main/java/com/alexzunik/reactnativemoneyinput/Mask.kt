@@ -2,6 +2,7 @@ package com.alexzunik.reactnativemoneyinput
 
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
+import kotlin.math.floor
 
 class Mask {
   class Options(
@@ -10,7 +11,9 @@ class Mask {
     val prefix: String,
     val suffix: String,
     val maximumIntegerDigits: Int?,
-    val maximumFractionalDigits: Int
+    val maximumFractionalDigits: Int,
+    val minValue: Double?,
+    val maxValue: Double?,
   ){}
 
 
@@ -18,7 +21,11 @@ class Mask {
     val systemDecimalSeparator = DecimalFormat().decimalFormatSymbols.decimalSeparator.toString()
 
     fun apply(forText: String, options: Options): String {
-      val rawText = unmask(forText, options)
+      val rawText = range(
+        text =  unmask(forText, options),
+        minValue = options.minValue,
+        maxValue = options.maxValue
+      )
         .replace(systemDecimalSeparator, options.fractionSeparator)
 
       if (rawText.isEmpty()) {
@@ -65,6 +72,40 @@ class Mask {
         .removePrefix(options.prefix)
         .removeSuffix(options.suffix)
         .replace(Regex("[^\\d\\$systemDecimalSeparator]"), "")
+    }
+
+    private fun range(text: String, minValue: Double?, maxValue: Double?): String {
+      var result = if (text == systemDecimalSeparator)
+        "0."
+      else
+        text.replace(systemDecimalSeparator, ".")
+
+      if (minValue != null) {
+        val value = result.toDoubleOrNull() ?: return ""
+
+        if (minValue > value) {
+          result = minValue.format()
+        }
+      }
+
+      if (maxValue != null) {
+        val value = result.toDoubleOrNull() ?: return ""
+
+        if (maxValue < value) {
+          result = maxValue.format()
+        }
+      }
+
+      return result
+        .replace(".", systemDecimalSeparator)
+    }
+
+    private fun Double.format(): String {
+      val likeInteger = floor(this) == this
+      return if (likeInteger)
+          this.toString().replace(".0", "")
+        else
+          this.toString()
     }
 
     private fun String.withSuffix(suffix: String): String {

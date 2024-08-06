@@ -106,6 +106,16 @@ interface MaskOptions {
    * Default: `2`
    */
   maximumFractionalDigits?: number;
+  /**
+   * Minimum numeric value.
+   * It will be set to input if user enters value less than minValue
+   */
+  minValue?: number;
+  /**
+   * Maximum numeric value.
+   * It will be set to input if user enters value greater than maxValue
+   */
+  maxValue?: number;
 }
 ```
 
