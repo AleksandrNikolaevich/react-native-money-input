@@ -98,24 +98,29 @@ export const MoneyTextInput = forwardRef<TextInput, MoneyTextInputProps>(
 
     useImperativeHandle(ref, () => inputRef.current!);
 
-    const maskOptions = useMemo(
-      () => ({
+    const maskOptions = useMemo(() => {
+      if (fractionSeparator === '') {
+        throw new MoneyInputError(
+          'The property `fractionSeparator` cannot be an empty string'
+        );
+      }
+
+      return {
         groupingSeparator,
         fractionSeparator,
         suffix,
         prefix,
         maximumIntegerDigits,
         maximumFractionalDigits,
-      }),
-      [
-        fractionSeparator,
-        groupingSeparator,
-        maximumFractionalDigits,
-        maximumIntegerDigits,
-        suffix,
-        prefix,
-      ]
-    );
+      };
+    }, [
+      fractionSeparator,
+      groupingSeparator,
+      maximumFractionalDigits,
+      maximumIntegerDigits,
+      suffix,
+      prefix,
+    ]);
 
     useEffect(() => {
       const reactNode = findNodeHandle(inputRef.current);
@@ -160,3 +165,9 @@ export const MoneyTextInput = forwardRef<TextInput, MoneyTextInputProps>(
     );
   }
 );
+
+class MoneyInputError extends Error {
+  constructor(msg: string) {
+    super(`[MoneyInput]: ${msg}`);
+  }
+}

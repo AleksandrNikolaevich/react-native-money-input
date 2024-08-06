@@ -6,7 +6,8 @@ export interface MaskOptions {
    */
   groupingSeparator?: string;
   /**
-   * Separator between integer and fraction parts
+   * Separator between integer and fraction parts.
+   * Will be ignored if you set maximumFractionalDigits = 0
    *
    * Default: system separator
    */

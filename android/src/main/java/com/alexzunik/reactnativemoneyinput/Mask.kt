@@ -42,14 +42,17 @@ class Mask {
           .withSuffix(options.suffix)
       }
 
-      result += options.fractionSeparator
+      if (options.maximumFractionalDigits > 0) {
+        result += options.fractionSeparator
 
-      val fraction = fractionSeparators[1]
+        val fraction = fractionSeparators[1]
 
-      result += if (fraction.count() > options.maximumFractionalDigits)
-        fraction.slice(0 until options.maximumFractionalDigits)
-      else
-        fraction
+        result += if (fraction.count() > options.maximumFractionalDigits)
+          fraction.slice(0 until options.maximumFractionalDigits)
+        else
+          fraction
+      }
+
 
       return result
         .withPrefix(options.prefix)

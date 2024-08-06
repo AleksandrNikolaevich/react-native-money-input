@@ -34,14 +34,16 @@ public class Mask {
     
     var result = numberFormatter.string(from: NSNumber(value: integerPart)) ?? ""
     
-    guard let fractionalPart = fractionSeparators[safe: 1] else {
-      return result
-        .with(prefix: options.prefix)
-        .with(suffix: options.suffix)
+    if (options.maximumFractionalDigits > 0) {
+      guard let fractionalPart = fractionSeparators[safe: 1] else {
+        return result
+          .with(prefix: options.prefix)
+          .with(suffix: options.suffix)
+      }
+
+      result += options.fractionSeparator
+      result += fractionalPart[safe: 0...options.maximumFractionalDigits]
     }
-    
-    result += options.fractionSeparator
-    result += fractionalPart[safe: 0...options.maximumFractionalDigits]
     
     return result
       .with(prefix: options.prefix)
