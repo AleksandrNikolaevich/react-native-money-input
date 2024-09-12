@@ -68,6 +68,7 @@ class Mask {
 
     fun unmask(text: String, options: Options): String {
       return text
+        .replace(".", systemDecimalSeparator)
         .replace(options.fractionSeparator, systemDecimalSeparator)
         .removePrefix(options.prefix)
         .removeSuffix(options.suffix)
