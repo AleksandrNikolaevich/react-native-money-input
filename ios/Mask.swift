@@ -16,6 +16,7 @@ public class Mask {
   }
 
   static let systemDecimalSeparator = NumberFormatter().decimalSeparator ?? "."
+  static let jsDecimalSeparator = "."
   
   public static func apply(for text: String, withOptions options: Options) -> String {
     let rawText = Mask.range(
@@ -58,18 +59,16 @@ public class Mask {
   
   public static func unmask(text: String, withOptions options: Options) -> String {
     return text
-      .replace(substring: ".", withTemplate: systemDecimalSeparator)
-      .replace(substring: options.fractionSeparator, withTemplate: systemDecimalSeparator)
+      .replace(substring: options.fractionSeparator, withTemplate: jsDecimalSeparator)
       .replace(prefix: options.prefix ?? "", withTemplate: "")
       .replace(suffix: options.suffix ?? "", withTemplate: "")
-      .replace(pattern: "[^\\d\\\(systemDecimalSeparator)]", withTemplate: "")
+      .replace(pattern: "[^\\d\\\(jsDecimalSeparator)]", withTemplate: "")
   }
   
   private static func range(text: String, minValue: Double?, maxValue: Double?) -> String {
     var result = text == systemDecimalSeparator
       ? "0."
       : text
-        .replace(substring: systemDecimalSeparator, withTemplate: ".")
     
     if (minValue != nil) {
       guard let value = Double(result) else {

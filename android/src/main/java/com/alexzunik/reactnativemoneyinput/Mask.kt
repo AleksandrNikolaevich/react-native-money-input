@@ -19,6 +19,7 @@ class Mask {
 
   companion object {
     val systemDecimalSeparator = DecimalFormat().decimalFormatSymbols.decimalSeparator.toString()
+    val jsDecimalSeparator = "."
 
     fun apply(forText: String, options: Options): String {
       val rawText = range(
@@ -68,18 +69,17 @@ class Mask {
 
     fun unmask(text: String, options: Options): String {
       return text
-        .replace(".", systemDecimalSeparator)
-        .replace(options.fractionSeparator, systemDecimalSeparator)
+        .replace(options.fractionSeparator, jsDecimalSeparator)
         .removePrefix(options.prefix)
         .removeSuffix(options.suffix)
-        .replace(Regex("[^\\d\\$systemDecimalSeparator]"), "")
+        .replace(Regex("[^\\d\\$jsDecimalSeparator]"), "")
     }
 
     private fun range(text: String, minValue: Double?, maxValue: Double?): String {
-      var result = if (text == systemDecimalSeparator)
+      var result = if (text == jsDecimalSeparator)
         "0."
       else
-        text.replace(systemDecimalSeparator, ".")
+        text
 
       if (minValue != null) {
         val value = result.toDoubleOrNull() ?: return ""
