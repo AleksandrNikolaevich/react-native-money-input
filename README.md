@@ -15,9 +15,9 @@
   </a>
 </p>
 
-Fully native money input for React Native
+🔥🔥🔥 Fully native money input for React Native. Based original TextInput component.
 
-## Example
+## 🚀 Example
 
 |iOS|Android|
 |-|-|
@@ -26,7 +26,7 @@ Fully native money input for React Native
 
 
 
-## Installation
+## 📥 Installation
 
 ```sh
 yarn add @alexzunik/react-native-money-input
@@ -34,7 +34,7 @@ yarn add @alexzunik/react-native-money-input
 npx pod-install
 ```
 
-## Usage
+## 🎮 Usage
 
 ```js
 import { MoneyTextInput } from '@alexzunik/react-native-money-input';
@@ -60,7 +60,21 @@ const Component = () => {
 ```
 
 
-## Props
+## 📦 Props
+
+The component fully inherits TextInput props and brings new props. See below:
+
+```ts
+export interface MoneyTextInputProps extends TextInputProps, MaskOptions {
+  /**
+   * Callback with entered value
+   *
+   * @param formatted {string} formatted text
+   * @param extracted {string} extracted text
+   */
+  onChangeText: (formatted: string, extracted?: string) => void;
+}
+```
 
 ```ts
 
@@ -119,7 +133,7 @@ interface MaskOptions {
 }
 ```
 
-## Testing
+## 👨‍🔧 Testing
 
 in order to load mocks provided by react-native-money-input add following to your jest config in jest.config.json:
 
@@ -127,7 +141,7 @@ in order to load mocks provided by react-native-money-input add following to you
 "setupFiles": ["./node_modules/@alexzunik/react-native-money-input/jest/setup.js"]
 ```
 
-## Contributing
+## 🤝 Contributing
 
 See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
 
