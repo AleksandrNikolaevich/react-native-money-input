@@ -34,14 +34,20 @@ class Mask {
       }
 
       val fractionSeparators = rawText.split(options.fractionSeparator)
-      val integerPart = if (fractionSeparators[0].isEmpty()) 0 else fractionSeparators[0].toBigInteger()
+
+      val decimalFormatSymbols = DecimalFormatSymbols()
+      decimalFormatSymbols.groupingSeparator = options.groupingSeparator.toCharArray()[0]
 
       val formatter = DecimalFormat()
 
-      formatter.maximumIntegerDigits = options.maximumIntegerDigits ?: formatter.maximumIntegerDigits
-      val decimalFormatSymbols = DecimalFormatSymbols()
-      decimalFormatSymbols.groupingSeparator = options.groupingSeparator.toCharArray()[0]
+      val maximumIntegerDigits = options.maximumIntegerDigits ?: formatter.maximumIntegerDigits
+
+      formatter.maximumIntegerDigits = maximumIntegerDigits
       formatter.decimalFormatSymbols = decimalFormatSymbols
+
+      val integerPart = if (fractionSeparators[0].isEmpty()) 0
+        else truncate(fractionSeparators[0], maximumIntegerDigits).toBigInteger()
+
       var result = formatter.format(integerPart)
 
       if (fractionSeparators.count() == 1) {
@@ -99,6 +105,14 @@ class Mask {
 
       return result
         .replace(".", systemDecimalSeparator)
+    }
+
+    private fun truncate(string: String, length: Int): String {
+      return if (string.length > length) {
+        string.substring(0, length)
+      } else {
+        string
+      }
     }
 
     private fun Double.format(): String {

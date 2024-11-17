@@ -31,15 +31,18 @@ public class Mask {
     }
     
     let fractionSeparators = rawText.components(separatedBy: options.fractionSeparator)
-    
-    let integerPart = Int(fractionSeparators[0]) ?? 0
 
     let numberFormatter = NumberFormatter()
+    
+    let maximumIntegerDigits = options.maximumIntegerDigits ?? numberFormatter.maximumIntegerDigits
+    
     numberFormatter.numberStyle = .decimal
-    numberFormatter.maximumIntegerDigits = options.maximumIntegerDigits ?? numberFormatter.maximumIntegerDigits
+    numberFormatter.maximumIntegerDigits = maximumIntegerDigits
     numberFormatter.groupingSeparator = options.groupingSeparator
     
-    var result = numberFormatter.string(from: NSNumber(value: integerPart)) ?? ""
+    let integerPart = Decimal(string: truncate(fractionSeparators[0], toLength: maximumIntegerDigits)) ?? 0
+    
+    var result = numberFormatter.string(from: NSDecimalNumber(decimal: integerPart)) ?? ""
     
     if (options.maximumFractionalDigits > 0) {
       guard let fractionalPart = fractionSeparators[safe: 1] else {
@@ -93,4 +96,10 @@ public class Mask {
     return result
       .replace(substring: ".", withTemplate: systemDecimalSeparator)
   }
+  
+  private static func truncate(_ string: String, toLength length: Int) -> String {
+    return string.count > length
+      ? String(string.prefix(length))
+      : string
+}
 }

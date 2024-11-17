@@ -30,8 +30,9 @@ export interface MaskOptions {
   suffix?: string;
   /**
    * Maximum length in integer part, exclude separators
+   * Maximum possible value is 36
    *
-   * Default: `Infinity`
+   * Default: `36`
    */
   maximumIntegerDigits?: number;
   /**
@@ -42,12 +43,12 @@ export interface MaskOptions {
   maximumFractionalDigits?: number;
   /**
    * Minimum numeric value.
-   * It will be set to input if user enters less than minValue
+   * It will be set to input if user enters value less than minValue
    */
   minValue?: number;
   /**
    * Maximum numeric value.
-   * It will be set to input if user enters less than maxValue
+   * It will be set to input if user enters value greater than maxValue
    */
   maxValue?: number;
 }

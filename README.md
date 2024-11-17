@@ -110,8 +110,9 @@ interface MaskOptions {
   suffix?: string;
   /**
    * Maximum length in integer part, exclude separators
+   * Maximum possible value is 36
    *
-   * Default: `Infinity`
+   * Default: `36`
    */
   maximumIntegerDigits?: number;
   /**
@@ -132,6 +133,10 @@ interface MaskOptions {
   maxValue?: number;
 }
 ```
+
+## ⚠️ limitations
+
+- Maximum possible value for property `maximumIntegerDigits` is `36`
 
 ## 👨‍🔧 Testing
 

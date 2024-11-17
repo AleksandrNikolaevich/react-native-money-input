@@ -68,6 +68,8 @@ export function unmask(text: string, options: MaskOptions): Promise<string> {
   return ReactNativeMoneyInput.unmask(text, options);
 }
 
+export const MAX_INTEGER_DIGITS = 36;
+
 export interface MoneyTextInputProps extends TextInputProps, MaskOptions {
   /**
    * Callback with entered value
@@ -122,7 +124,10 @@ export const MoneyTextInput = forwardRef<TextInput, MoneyTextInputProps>(
         fractionSeparator,
         suffix,
         prefix,
-        maximumIntegerDigits,
+        maximumIntegerDigits: Math.min(
+          MAX_INTEGER_DIGITS,
+          maximumIntegerDigits ?? MAX_INTEGER_DIGITS
+        ),
         maximumFractionalDigits,
         minValue,
         maxValue,
