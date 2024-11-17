@@ -20,11 +20,11 @@ class MaskedTextWatcher(
 
   override fun afterTextChanged(value: Editable?) {
     if (value != null && value.toString() == old) {
+      setCursor(old)
       return
     }
     val newValue = Mask.apply(value.toString(), options)
     field.setText(newValue)
-    setCursor(newValue)
   }
 
   private fun setCursor(value: String) {
