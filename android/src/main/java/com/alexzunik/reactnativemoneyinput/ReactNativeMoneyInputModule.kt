@@ -26,12 +26,8 @@ class ReactNativeMoneyInputModule(private val reactContext: ReactApplicationCont
       val uiManager =
         UIManagerHelper.getUIManagerForReactTag(reactContext, reactNode)
 
-      val editText = try {
-        uiManager?.resolveView(reactNode) as? EditText ?: return@runOnUiThread
-      } catch (e: Throwable) {
-        return@runOnUiThread
-      }
-      
+      val editText = getComponent(reactNode) ?: return@runOnUiThread
+
       val prevListener = listeners[getKey(reactNode)]
 
       editText.removeTextChangedListener(prevListener)
@@ -47,7 +43,10 @@ class ReactNativeMoneyInputModule(private val reactContext: ReactApplicationCont
 
   @ReactMethod
   fun unmount(reactNode: Int) {
-    listeners[getKey(reactNode)] = null
+    val editText = getComponent(reactNode) ?: return
+    val listener = listeners[getKey(reactNode)] ?: return
+    editText.removeTextChangedListener(listener)
+    listeners.remove(getKey(reactNode))
   }
 
   @ReactMethod
@@ -116,6 +115,17 @@ class ReactNativeMoneyInputModule(private val reactContext: ReactApplicationCont
   }
   private fun safeResolveDouble(map: ReadableMap, key: String, defaultValue: Double): Double {
     return safeResolveDouble(map, key) ?: defaultValue
+  }
+
+  private fun getComponent(reactNode: Int): EditText? {
+    val uiManager =
+      UIManagerHelper.getUIManagerForReactTag(reactContext, reactNode)
+
+    return try {
+      uiManager?.resolveView(reactNode) as? EditText ?: return null
+    } catch (e: Throwable) {
+      return null
+    }
   }
 
   companion object {
