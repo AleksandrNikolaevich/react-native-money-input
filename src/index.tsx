@@ -143,13 +143,17 @@ export const MoneyTextInput = forwardRef<TextInput, MoneyTextInputProps>(
       maxValue,
     ]);
 
-    useEffect(() => {
+    const applyMaskForNode = useCallback(() => {
       const reactNode = findNodeHandle(inputRef.current);
       if (!reactNode) {
         return;
       }
       applyMask(reactNode, maskOptions);
     }, [maskOptions]);
+
+    useEffect(() => {
+      applyMaskForNode();
+    }, [applyMaskForNode]);
 
     useEffect(() => {
       const reactNode = findNodeHandle(inputRef.current);
@@ -182,6 +186,10 @@ export const MoneyTextInput = forwardRef<TextInput, MoneyTextInputProps>(
         {...props}
         onChangeText={changeValueHandler}
         value={internalValue}
+        onLayout={(e) => {
+          applyMaskForNode();
+          props.onLayout?.(e);
+        }}
       />
     );
   }

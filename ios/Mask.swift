@@ -14,7 +14,7 @@ public class Mask {
       }
     }
   }
-
+  
   static let systemDecimalSeparator = NumberFormatter().decimalSeparator ?? "."
   static let jsDecimalSeparator = "."
   
@@ -31,7 +31,7 @@ public class Mask {
     }
     
     let fractionSeparators = rawText.components(separatedBy: options.fractionSeparator)
-
+    
     let numberFormatter = NumberFormatter()
     
     let maximumIntegerDigits = options.maximumIntegerDigits ?? numberFormatter.maximumIntegerDigits
@@ -50,7 +50,7 @@ public class Mask {
           .with(prefix: options.prefix)
           .with(suffix: options.suffix)
       }
-
+      
       result += options.fractionSeparator
       result += fractionalPart[safe: 0...options.maximumFractionalDigits]
     }
@@ -61,17 +61,36 @@ public class Mask {
   }
   
   public static func unmask(text: String, withOptions options: Options) -> String {
+    if (!Mask.needUnmask(text)) {
+      return text
+    }
+    
     return text
+      .replace(substring: options.groupingSeparator, withTemplate: "")
       .replace(substring: options.fractionSeparator, withTemplate: jsDecimalSeparator)
       .replace(prefix: options.prefix ?? "", withTemplate: "")
       .replace(suffix: options.suffix ?? "", withTemplate: "")
       .replace(pattern: "[^\\d\\\(jsDecimalSeparator)]", withTemplate: "")
   }
   
+  private static func needUnmask(_ str: String) -> Bool {
+    guard !str.isEmpty else { return false }
+    
+    let range = NSRange(location: 0, length: str.utf16.count)
+    
+    let withFractionPattern = "^-?\\d+(\\.\\d+)?$"
+    let regex1 = try! NSRegularExpression(pattern: withFractionPattern)
+    
+    let emptyFractionPattern = "^-?\\d+(\\.)?$"
+    let regex2 = try! NSRegularExpression(pattern: emptyFractionPattern)
+    
+    return regex1.firstMatch(in: str, options: [], range: range) == nil && regex2.firstMatch(in: str, options: [], range: range) == nil
+  }
+  
   private static func range(text: String, minValue: Double?, maxValue: Double?) -> String {
     var result = text == systemDecimalSeparator
-      ? "0."
-      : text
+    ? "0."
+    : text
     
     if (minValue != nil) {
       guard let value = Double(result) else {
@@ -99,7 +118,7 @@ public class Mask {
   
   private static func truncate(_ string: String, toLength length: Int) -> String {
     return string.count > length
-      ? String(string.prefix(length))
-      : string
-}
+    ? String(string.prefix(length))
+    : string
+  }
 }

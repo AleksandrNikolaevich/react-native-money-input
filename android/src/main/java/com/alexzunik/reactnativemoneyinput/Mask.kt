@@ -74,11 +74,25 @@ class Mask {
     }
 
     fun unmask(text: String, options: Options): String {
+      if (!needUnmask(text)) {
+        return text
+      }
+
       return text
+        .replace(options.groupingSeparator, "")
         .replace(options.fractionSeparator, jsDecimalSeparator)
         .removePrefix(options.prefix)
         .removeSuffix(options.suffix)
         .replace(Regex("[^\\d\\$jsDecimalSeparator]"), "")
+    }
+
+    private fun needUnmask(str: String): Boolean {
+      if (str.isEmpty()) return false
+
+      val withFractionPattern = Regex("^-?\\d+(\\.\\d+)?$")
+      val emptyFractionPattern = Regex("^-?\\d+(\\.)?$")
+
+      return !withFractionPattern.matches(str) && !emptyFractionPattern.matches(str)
     }
 
     private fun range(text: String, minValue: Double?, maxValue: Double?): String {

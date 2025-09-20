@@ -30,7 +30,9 @@ class ReactNativeMoneyInputModule(private val reactContext: ReactApplicationCont
 
       val prevListener = listeners[getKey(reactNode)]
 
-      editText.removeTextChangedListener(prevListener)
+      if (prevListener != null) {
+        editText.removeTextChangedListener(prevListener)
+      }
 
       val listener = MaskedTextWatcher(editText, getMaskOptions(options))
 
