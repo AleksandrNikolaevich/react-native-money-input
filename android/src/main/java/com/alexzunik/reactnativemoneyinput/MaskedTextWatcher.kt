@@ -23,7 +23,15 @@ class MaskedTextWatcher(
       setCursor(old)
       return
     }
-    val newValue = Mask.apply(value.toString(), options)
+
+    val resultString = value
+      .toString()
+      .replaceLast(
+      Mask.systemDecimalSeparator + options.suffix,
+      options.fractionSeparator + options.suffix
+      )
+
+    val newValue = Mask.apply(resultString, options)
     field.setText(newValue)
   }
 

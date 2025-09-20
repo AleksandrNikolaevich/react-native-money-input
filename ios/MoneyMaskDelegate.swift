@@ -17,7 +17,13 @@ class MoneyMaskDelegate: NSObject, UITextFieldDelegate {
   
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let text = textField.text ?? ""
-    let resultString = text.replacingCharacters(in: Range(range, in: text)!, with: string)
+    let suffix = (options.suffix ?? "")
+    let resultString = text
+      .replacingCharacters(in: Range(range, in: text)!, with: string)
+      .replace(
+        suffix: Mask.systemDecimalSeparator + suffix,
+        withTemplate: options.fractionSeparator + suffix
+      )
     
     let maskedText = Mask.apply(for: resultString, withOptions: options)
     
