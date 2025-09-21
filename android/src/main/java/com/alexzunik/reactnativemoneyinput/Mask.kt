@@ -14,6 +14,7 @@ class Mask {
     val maximumFractionalDigits: Int,
     val minValue: Double?,
     val maxValue: Double?,
+    val needBeforeUnmasking: Boolean,
   ){}
 
 
@@ -23,7 +24,7 @@ class Mask {
 
     fun apply(forText: String, options: Options): String {
       val rawText = range(
-        text =  unmask(forText, options),
+        text = if (options.needBeforeUnmasking) unmask(forText, options) else forText,
         minValue = options.minValue,
         maxValue = options.maxValue
       )
@@ -74,25 +75,12 @@ class Mask {
     }
 
     fun unmask(text: String, options: Options): String {
-      if (!needUnmask(text)) {
-        return text
-      }
-
       return text
         .replace(options.groupingSeparator, "")
         .replace(options.fractionSeparator, jsDecimalSeparator)
         .removePrefix(options.prefix)
         .removeSuffix(options.suffix)
         .replace(Regex("[^\\d\\$jsDecimalSeparator]"), "")
-    }
-
-    private fun needUnmask(str: String): Boolean {
-      if (str.isEmpty()) return false
-
-      val withFractionPattern = Regex("^-?\\d+(\\.\\d+)?$")
-      val emptyFractionPattern = Regex("^-?\\d+(\\.)?$")
-
-      return !withFractionPattern.matches(str) && !emptyFractionPattern.matches(str)
     }
 
     private fun range(text: String, minValue: Double?, maxValue: Double?): String {

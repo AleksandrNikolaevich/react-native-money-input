@@ -74,6 +74,7 @@ class ReactNativeMoneyInputModule(private val reactContext: ReactApplicationCont
     val maximumFractionalDigits = safeResolveInt(options, "maximumFractionalDigits", 2)
     val minValue = safeResolveDouble(options, "minValue")
     val maxValue = safeResolveDouble(options, "maxValue")
+    val needBeforeUnmasking = safeResolveBoolean(options, "needBeforeUnmasking", true)
 
     return Mask.Options(
       groupingSeparator,
@@ -83,7 +84,8 @@ class ReactNativeMoneyInputModule(private val reactContext: ReactApplicationCont
       maximumIntegerDigits,
       maximumFractionalDigits,
       minValue,
-      maxValue)
+      maxValue,
+      needBeforeUnmasking)
   }
 
   private fun safeResolveString(map: ReadableMap, key: String): String? {
@@ -115,8 +117,24 @@ class ReactNativeMoneyInputModule(private val reactContext: ReactApplicationCont
       null
     }
   }
+
   private fun safeResolveDouble(map: ReadableMap, key: String, defaultValue: Double): Double {
     return safeResolveDouble(map, key) ?: defaultValue
+  }
+
+  private fun safeResolveBoolean(map: ReadableMap, key: String): Boolean? {
+    if (!map.hasKey(key)) {
+      return null
+    }
+    return try {
+      map.getBoolean(key)
+    } catch (e: Exception) {
+      null
+    }
+  }
+
+  private fun safeResolveBoolean(map: ReadableMap, key: String, defaultValue: Boolean): Boolean {
+    return safeResolveBoolean(map, key) ?: defaultValue
   }
 
   private fun getComponent(reactNode: Int): EditText? {

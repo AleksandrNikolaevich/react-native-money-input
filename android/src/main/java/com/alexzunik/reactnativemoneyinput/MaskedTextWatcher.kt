@@ -26,7 +26,7 @@ class MaskedTextWatcher(
 
     val resultString = value
       .toString()
-      .replaceLast(
+      .replaceSuffix(
       Mask.systemDecimalSeparator + options.suffix,
       options.fractionSeparator + options.suffix
       )

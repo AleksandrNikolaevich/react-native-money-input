@@ -52,7 +52,7 @@ class ReactNativeMoneyInput: NSObject, RCTBridgeModule {
   @objc(unmask:options:resolve:reject:)
   func unmask(value: NSString, options: NSDictionary, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
     let options = getMaskOptions(from: options)
-    
+
     resolve(
       Mask.unmask(text: String(value), withOptions: options)
     )
@@ -71,6 +71,7 @@ class ReactNativeMoneyInput: NSObject, RCTBridgeModule {
     let maximumFractionalDigits = options["maximumFractionalDigits"] as? Int ?? 2
     let maxValue = options["maxValue"] as? Double
     let minValue = options["minValue"] as? Double
+    let needBeforeUnmasking: Bool = options["needBeforeUnmasking"] as? Bool ?? true
     
     return Mask.Options(
       groupingSeparator: groupingSeparator,
@@ -80,7 +81,8 @@ class ReactNativeMoneyInput: NSObject, RCTBridgeModule {
       maximumIntegerDigits: maximumIntegerDigits,
       maximumFractionalDigits: maximumFractionalDigits,
       minValue: minValue,
-      maxValue: maxValue)
+      maxValue: maxValue,
+      needBeforeUnmasking: needBeforeUnmasking)
   }
   
   private func getTextInput(with bridge: RCTBridge,for view: UIView) -> RCTUITextField? {

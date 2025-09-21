@@ -166,7 +166,11 @@ export const MoneyTextInput = forwardRef<TextInput, MoneyTextInputProps>(
     }, []);
 
     useEffect(() => {
-      mask(value ?? '', maskOptions).then(setInternalValue);
+      mask(value ?? '', {
+        // @ts-ignore
+        needBeforeUnmasking: false,
+        ...maskOptions,
+      }).then(setInternalValue);
     }, [value, maskOptions]);
 
     const changeValueHandler = useCallback(

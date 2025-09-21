@@ -13,6 +13,7 @@ public class Mask {
         suffix?.count ?? 0
       }
     }
+    let needBeforeUnmasking: Bool
   }
   
   static let systemDecimalSeparator = NumberFormatter().decimalSeparator ?? "."
@@ -20,7 +21,7 @@ public class Mask {
   
   public static func apply(for text: String, withOptions options: Options) -> String {
     let rawText = Mask.range(
-      text: Mask.unmask(text: text, withOptions: options),
+      text: options.needBeforeUnmasking ? Mask.unmask(text: text, withOptions: options) : text,
       minValue: options.minValue,
       maxValue: options.maxValue
     )
@@ -61,30 +62,12 @@ public class Mask {
   }
   
   public static func unmask(text: String, withOptions options: Options) -> String {
-    if (!Mask.needUnmask(text)) {
-      return text
-    }
-    
     return text
       .replace(substring: options.groupingSeparator, withTemplate: "")
       .replace(substring: options.fractionSeparator, withTemplate: jsDecimalSeparator)
       .replace(prefix: options.prefix ?? "", withTemplate: "")
       .replace(suffix: options.suffix ?? "", withTemplate: "")
       .replace(pattern: "[^\\d\\\(jsDecimalSeparator)]", withTemplate: "")
-  }
-  
-  private static func needUnmask(_ str: String) -> Bool {
-    guard !str.isEmpty else { return false }
-    
-    let range = NSRange(location: 0, length: str.utf16.count)
-    
-    let withFractionPattern = "^-?\\d+(\\.\\d+)?$"
-    let regex1 = try! NSRegularExpression(pattern: withFractionPattern)
-    
-    let emptyFractionPattern = "^-?\\d+(\\.)?$"
-    let regex2 = try! NSRegularExpression(pattern: emptyFractionPattern)
-    
-    return regex1.firstMatch(in: str, options: [], range: range) == nil && regex2.firstMatch(in: str, options: [], range: range) == nil
   }
   
   private static func range(text: String, minValue: Double?, maxValue: Double?) -> String {
