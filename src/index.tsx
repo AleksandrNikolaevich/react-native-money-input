@@ -191,7 +191,9 @@ export const MoneyTextInput = forwardRef<TextInput, MoneyTextInputProps>(
         onChangeText={changeValueHandler}
         value={internalValue}
         onLayout={(e) => {
-          applyMaskForNode();
+          setTimeout(() => {
+            applyMaskForNode();
+          }, 10);
           props.onLayout?.(e);
         }}
       />

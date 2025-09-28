@@ -20,6 +20,7 @@ class Mask {
 
   companion object {
     val systemDecimalSeparator = DecimalFormat().decimalFormatSymbols.decimalSeparator.toString()
+    val systemGroupingSeparator = DecimalFormat().decimalFormatSymbols.groupingSeparator.toString()
     val jsDecimalSeparator = "."
 
     fun apply(forText: String, options: Options): String {
@@ -37,7 +38,11 @@ class Mask {
       val fractionSeparators = rawText.split(options.fractionSeparator)
 
       val decimalFormatSymbols = DecimalFormatSymbols()
-      decimalFormatSymbols.groupingSeparator = options.groupingSeparator.toCharArray()[0]
+      val groupingSeparator = options.groupingSeparator.toCharArray()
+
+      if (groupingSeparator.isNotEmpty()) {
+        decimalFormatSymbols.groupingSeparator = groupingSeparator[0]
+      }
 
       val formatter = DecimalFormat()
 
@@ -49,7 +54,10 @@ class Mask {
       val integerPart = if (fractionSeparators[0].isEmpty()) 0
         else truncate(fractionSeparators[0], maximumIntegerDigits).toBigInteger()
 
-      var result = formatter.format(integerPart)
+      var result = if (groupingSeparator.isNotEmpty())
+          formatter.format(integerPart)
+        else
+          formatter.format(integerPart).replace(systemGroupingSeparator, "")
 
       if (fractionSeparators.count() == 1) {
         return result

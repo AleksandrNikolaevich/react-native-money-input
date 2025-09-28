@@ -7,7 +7,6 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReadableMap
-import com.facebook.react.uimanager.UIManagerModule
 import com.facebook.react.uimanager.UIManagerHelper
 import com.facebook.react.bridge.UiThreadUtil
 
@@ -23,9 +22,6 @@ class ReactNativeMoneyInputModule(private val reactContext: ReactApplicationCont
   @ReactMethod
   fun applyMask(reactNode: Int, options: ReadableMap) {
     UiThreadUtil.runOnUiThread {
-      val uiManager =
-        UIManagerHelper.getUIManagerForReactTag(reactContext, reactNode)
-
       val editText = getComponent(reactNode) ?: return@runOnUiThread
 
       val prevListener = listeners[getKey(reactNode)]
